@@ -1,0 +1,36 @@
+openapi: 3.0.0
+info:
+  title: Nische Store API
+  description: Documentación de la API de Nische Store - Módulo de Usuarios
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+    description: Desarrollo
+paths:
+  /api/chat:
+    get:
+      summary: Acceder a la página de chat
+      description: Esta ruta se utiliza para acceder a la página de chat. El usuario debe estar autenticado y no ser un administrador para acceder.
+      tags:
+        - Chat
+      responses:
+        '200':
+          description: Los mensajes de chat fueron devueltos de forma exitosa
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChatMessage'
+
+components:
+  schemas:
+    ChatMessage:
+      type: object
+      properties:
+        username:
+          type: string
+          description: Nombre de usuario del remitente del mensaje.
+        message:
+          type: string
+          description: Contenido del mensaje.

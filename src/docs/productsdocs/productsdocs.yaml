@@ -1,0 +1,559 @@
+openapi: 3.0.0
+info:
+  title: Nische Store API
+  description: Documentación de la API de Nische Store - Módulo de Productos
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+    description: Desarrollo
+paths:
+  /api/products:
+    get:
+      summary: Obtener todos los productos
+      tags:
+        - Products
+      responses:
+        '200':
+          description: Los productos fueron devueltos de forma exitosa
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+        '500':
+          description: Error del servidor. Usualmente generando la query o falla la conexión a la DB
+    post:
+      summary: Crear un nuevo producto
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                thumbnail:
+                  type: string
+                  format: binary
+                title:
+                  type: string
+                description:
+                  type: string
+                price:
+                  type: number
+                code:
+                  type: string
+                stock:
+                  type: integer
+                category:
+                  type: string
+                status:
+                  type: boolean
+      responses:
+        '201':
+          description: Producto creado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+  /api/products/{id}:
+    get:
+      summary: Obtener un producto por ID
+      tags:
+        - Products
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID del producto
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Respuesta exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Producto no encontrado
+    put:
+      summary: Actualizar un producto por ID
+      tags:
+        - Products
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID del producto
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+      responses:
+        '200':
+          description: Producto actualizado con éxito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Producto no encontrado
+    delete:
+      summary: Eliminar un producto por ID
+      tags:
+        - Products
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID del producto
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Producto eliminado con éxito
+        '404':
+          description: Producto no encontrado
+      components:
+        schemas:
+          Product:
+            type: object
+            properties:
+              _id:
+                type: string
+                description: ID del producto
+              title:
+                type: string
+                description: Título del producto
+              description:
+                type: string
+                description: Descripción del producto
+              price:
+                type: number
+                description: Precio del producto
+              thumbnail:
+                type: string
+                description: URL de la imagen del producto
+              code:
+                type: string
+                description: Código único del producto
+              stock:
+                type: integer
+                description: Cantidad en stock del producto
+              category:
+                type: string
+                description: Categoría del producto
+              status:
+                type: boolean
+                description: Estado del producto
+            required:
+              - title
+              - description
+              - price
+              - thumbnail
+              - code
+              - stock
+              - category
+          ProductInput:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Título del producto
+              description:
+                type: string
+                description: Descripción del producto
+              price:
+                type: number
+                description: Precio del producto
+              thumbnail:
+                type: string
+                description: URL de la imagen del producto
+              code:
+                type: string
+                description: Código único del producto
+              stock:
+                type: integer
+                description: Cantidad en stock del producto
+              category:
+                type: string
+                description: Categoría del producto
+            required:
+              - title
+              - description
+              - price
+              - thumbnail
+              - code
+              - stock
+              - category
+  /realtimeproducts:
+    get:
+      summary: Obtiene una lista de productos en tiempo real.
+      description: Esta ruta devuelve una lista de productos en tiempo real.
+      tags:
+        - Products
+      security:
+        - sessionAuth: []
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: Número de página.
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: Número de elementos por página.
+        - in: query
+          name: sort
+          schema:
+            type: string
+          description: Orden de clasificación (ascendente o descendente).
+        - in: query
+          name: query
+          schema:
+            type: string
+          description: Búsqueda de productos por nombre u otros criterios.
+      responses:
+        '200':
+          description: Respuesta exitosa.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  payload:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Product'
+                  nextPageUrl:
+                    type: string
+                  sort:
+                    type: string
+                  realTimeProductsContext:
+                    $ref: '#/components/schemas/RealTimeProductsContext'
+                  paginationInfo:
+                    $ref: '#/components/schemas/PaginationInfo'
+        '401':
+          description: No autorizado.
+        '403':
+          description: Permiso denegado.
+      components:
+        schemas:
+          Product:
+            type: object
+            properties:
+              _id:
+                type: string
+              title:
+                type: string
+              description:
+                type: string
+              price:
+                type: number
+              thumbnail:
+                type: string
+              code:
+                type: string
+              stock:
+                type: number
+              category:
+                type: string
+              owner:
+                type: string
+          RealTimeProductsContext:
+            type: object
+            properties:
+              isAdmin:
+                type: boolean
+              isPremium:
+                type: boolean
+              session:
+                type: object
+          PaginationInfo:
+            type: object
+            properties:
+              totalDocs:
+              type: integer
+              totalPages:
+                type: integer
+              page:
+                type: integer
+              nextPage:
+                type: integer
+              prevPage:
+                type: integer
+            required:
+              - totalDocs
+              - totalPages
+              - page
+              - nextPage
+              - prevPage
+  /products:
+    get:
+      summary: Muestra todos los productos
+      description: Obtiene una lista de todos los productos con opciones de paginación y filtrado.
+      tags:
+        - Products
+      parameters:
+        - name: page
+          in: query
+          description: The page number to retrieve.
+          required: false
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          description: The number of items per page.
+          required: false
+          schema:
+            type: integer
+        - name: sort
+          in: query
+          description: Sort order for the products.
+          required: false
+          schema:
+            type: string
+        - name: query
+          in: query
+          description: Query string for filtering products.
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response with a list of products.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  payload:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Product'
+                  totalPages:
+                    type: integer
+                  prevPage:
+                    type: integer
+                  nextPage:
+                    type: integer
+                  page:
+                    type: integer
+                  hasPrevPage:
+                    type: boolean
+                  hasNextPage:
+                    type: boolean
+                  prevLink:
+                    type: string
+                  nextLink:
+                    type: string
+        '400':
+          description: Bad request or invalid page number.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  msg:
+                    type: string
+      security:
+        - sessionAuth: []
+  /products/filter:
+    get:
+      summary: Obtener productos filtrados
+      description: Recupera una lista de productos filtrados según los parámetros de consulta.
+      tags:
+        - Products
+      responses:
+        200:
+          description: Una lista de productos filtrados.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  isAdmin:
+                    type: boolean
+                  isPremium:
+                    type: boolean
+                  userCartID:
+                    type: string
+                  session:
+                    $ref: '#/components/schemas/UserSession'
+                    type: object
+                  productsVisualice:
+                    type: array
+                    items:
+                      # Define aquí la estructura de un producto.
+                      type: object
+                      properties:
+                        _id:
+                          type: string
+                        title:
+                          type: string
+                        description:
+                          type: string
+                        price:
+                          type: number
+                        thumbnail:
+                          type: string
+                        code:
+                          type: string
+                        stock:
+                          type: integer
+                        category:
+                          type: string
+                        status:
+                          type: string
+                  paginationInfo:
+                    type: object
+                    properties:
+                      totalDocs:
+                        type: integer
+                  nextPageUrl:
+                    type: string
+                  prevPageUrl:
+                    type: string
+                  sort:
+                    type: string
+                  query:
+                    type: string
+                  titleFilter:
+                    type: string
+      parameters:
+        - name: page
+          in: query
+          description: Número de página
+          required: false
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          description: Número de artículos por página
+          required: false
+          schema:
+            type: integer
+            default: 10
+        - name: sort
+          in: query
+          description: Criterios de ordenamiento (ascendente o descendente)
+          required: false
+          schema:
+            type: string
+        - name: query
+          in: query
+          description: Consulta de busqueda
+          required: false
+          schema:
+            type: string
+        - name: title
+          in: query
+          description: Filtro de título
+          required: false
+          schema:
+            type: string
+components:
+  schemas:
+    UserSession:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: El identificador único del usuario.
+        email:
+          type: string
+          description: La dirección de correo electrónico del usuario.
+        firstName:
+          type: string
+          description: El primer nombre del usuario.
+        lastName:
+          type: string
+          description: El apellido del usuario.
+        age:
+          type: integer
+          description: La edad del usuario.
+        role:
+          type: string
+          description: El rol del usuario. Puede ser admin, premium o user.
+        cartID:
+          type: string
+          description: El ID del carrito asociado con el usuario.
+    Product:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Título del producto.
+        description:
+          type: string
+          description: Descripción del producto.
+        price:
+          type: number
+          description: Precio del producto.
+        thumbnail:
+          type: string
+          description: URL de la imagen del producto.
+        code:
+          type: string
+          description: Código único del producto.
+        stock:
+          type: number
+          description: Cantidad en stock del producto.
+        category:
+          type: string
+          enum: ['Camisetas', 'Shorts', 'Medias', 'Botines', 'Camperas']
+          default: 'Camisetas'
+          description: Categoría del producto.
+        status:
+          type: boolean
+          default: true
+          description: Estado del producto (true para activo, false para inactivo).
+        owner:
+          type: string
+          description: Propietario del producto.
+    Ticket:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Código del ticket.
+        purchase_datetime:
+          type: string
+          format: date-time
+          description: Fecha y hora de compra del ticket.
+        amount:
+          type: number
+          description: Monto total del ticket.
+        purchaser:
+          type: string
+          description: Comprador del ticket.
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              product:
+                type: object
+                description: Detalles del producto.
+              quantity:
+                type: number
+                description: Cantidad del producto en el ticket.
+              totalPrice:
+                type: number
+                description: Precio total del producto en el ticket.

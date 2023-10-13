@@ -1,0 +1,121 @@
+openapi: 3.0.0
+info:
+  title: Nische Store API
+  description: Documentación de la API de Nische Store - Módulo de Recuperación de Contraseña
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+    description: Desarrollo
+paths:
+  /api/tokens/forget-password:
+    get:
+      summary: Renderizar la página de restablecimiento de contraseña
+      description: Esta ruta se utiliza para renderizar la página de restablecimiento de contraseña.
+      tags:
+        - Tokens
+      responses:
+        200:
+          description: Página de restablecimiento de contraseña renderizada con éxito.
+        500:
+          description: Página de restablecimiento de contraseña no ha sido renderizada con éxito.
+    post:
+      summary: Enviar correo electrónico de restablecimiento de contraseña
+      description: Esta ruta se utiliza para enviar un correo electrónico de restablecimiento de contraseña a un usuario con la dirección de correo electrónico proporcionada.
+      tags:
+        - Tokens
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: Dirección de correo electrónico del usuario.
+              required:
+                - email
+      responses:
+        200:
+          description: Correo electrónico de restablecimiento de contraseña enviado con éxito.
+        400:
+          description: Error en la solicitud debido a datos faltantes o incorrectos.
+        404:
+          description: Usuario no encontrado.
+  /api/tokens/reset-password/{token}:
+    get:
+      summary: Verificar la validez del token de restablecimiento de contraseña
+      description: Esta ruta se utiliza para verificar la validez de un token de restablecimiento de contraseña y mostrar la página de restablecimiento de contraseña si el token es válido.
+      tags:
+        - Tokens
+      parameters:
+        - in: path
+          name: token
+          required: true
+          description: Token de restablecimiento de contraseña recibido por correo electrónico.
+          schema:
+            type: string
+      responses:
+        200:
+          description: Token de restablecimiento de contraseña válido.
+          content:
+            text/html:
+              schema:
+                type: string
+                example: <!DOCTYPE html><html><head>...</head><body><h1>Restablecer contraseña</h1>...</body></html>
+        400:
+          description: Token de restablecimiento de contraseña no proporcionado o inválido.
+          content:
+            text/html:
+              schema:
+                type: string
+                example: <!DOCTYPE html><html><head>...</head><body><h1>Token de restablecimiento de contraseña no válido</h1>...</body></html>
+  /api/tokens/reset-password:
+    post:
+      summary: Restablecer contraseña
+      description: Esta ruta se utiliza para restablecer la contraseña de un usuario después de recibir un token de restablecimiento válido.
+      tags:
+        - Tokens
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                newPassword:
+                  type: string
+                  description: Nueva contraseña para el usuario.
+                email:
+                  type: string
+                  description: Dirección de correo electrónico del usuario.
+              required:
+                - newPassword
+                - email
+      responses:
+        200:
+          description: Contraseña restablecida con éxito.
+          content:
+            text/html:
+              schema:
+                type: string
+                example: <!DOCTYPE html><html><head>...</head><body><h1>Contraseña restablecida con éxito</h1>...</body></html>
+        400:
+          description: Error al restablecer la contraseña o token inválido.
+        404:
+          description: Usuario no encontrado.
+components:
+  schemas:
+    Token:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: ID del usuario al que pertenece el token.
+        tokenNumber:
+          type: string
+          description: Número de token.
+        expiresAt:
+          type: string
+          format: date-time
+          description: Fecha y hora de vencimiento del token.

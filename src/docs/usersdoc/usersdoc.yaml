@@ -1,0 +1,244 @@
+openapi: 3.0.0
+info:
+  title: Nische Store API
+  description: Documentación de la API de Nische Store - Módulo de Usuarios
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+    description: Desarrollo
+paths:
+  /api/users/admincontrol:
+    get:
+      summary: Obtener todos los usuarios. Solo para administradores.
+      description: Obtiene una lista de todos los usuarios.
+      tags:
+        - Users
+      responses:
+        '200':
+          description: Lista de usuarios obtenida exitosamente.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '500':
+          description: Error del servidor. Usualmente falla la conexión a la base de datos.
+  /api/users/premium/{uid}:
+    get:
+      summary: Obtener información de un usuario premium. Solo para administradores.
+      description: Obtiene información detallada de un usuario premium por su ID.
+      tags:
+        - Users
+      parameters:
+        - in: path
+          name: uid
+          required: true
+          description: ID del usuario premium
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Información del usuario premium obtenida exitosamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: Usuario no encontrado.
+        '403':
+          description: Permiso denegado. El usuario no es administrador.
+    post:
+      summary: Cambiar el rol de un usuario premium. Solo para administradores.
+      description: Cambia el rol de un usuario premium por su ID y verifica la documentación requerida.
+      tags:
+        - Users
+      parameters:
+        - in: path
+          name: uid
+          required: true
+          description: ID del usuario premium
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                role:
+                  type: string
+                  enum: ['user', 'premium', 'admin']
+                  description: Nuevo rol del usuario
+              required:
+                - role
+      responses:
+        '200':
+          description: Rol de usuario premium actualizado exitosamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: Usuario no encontrado.
+        '403':
+          description: Permiso denegado o documentación insuficiente.
+  /api/users/{uid}/documents:
+    post:
+      summary: Subir documentos de usuario
+      description: Sube documentos al usuario con el ID especificado.
+      tags:
+        - Users
+      parameters:
+        - in: path
+          name: uid
+          required: true
+          description: ID del usuario
+          schema:
+            type: string
+        - in: formData
+          name: documents
+          required: true
+          description: Archivos de documentos a subir
+          type: array
+          items:
+            type: file
+        - in: formData
+          name: documentType
+          required: true
+          description: Tipo de documento
+          type: string
+          example: 'identificación'
+      responses:
+        '200':
+          description: Documentos subidos exitosamente.
+        '404':
+          description: Usuario no encontrado.
+        '500':
+          description: Error interno del servidor.
+  /api/users/{uid}/profile-image:
+    post:
+      summary: Subir imagen de perfil de usuario
+      description: Sube una imagen de perfil al usuario con el ID especificado.
+      tags:
+        - Users
+      parameters:
+        - in: path
+          name: uid
+          required: true
+          description: ID del usuario
+          schema:
+            type: string
+        - in: formData
+          name: profiles
+          required: true
+          description: Archivo de imagen de perfil a subir
+          type: file
+      responses:
+        '200':
+          description: Imagen de perfil subida exitosamente.
+        '404':
+          description: Usuario no encontrado.
+        '500':
+          description: Error interno del servidor.
+  /api/users/{uid}/documents/{documentName}:
+    post:
+      summary: Marcar documento como completado
+      description: Marca un documento específico de un usuario como completado.
+      tags:
+        - Users
+      parameters:
+        - in: path
+          name: uid
+          required: true
+          description: ID del usuario
+          schema:
+            type: string
+        - in: path
+          name: documentName
+          required: true
+          description: Nombre del documento a marcar como completado
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Documento marcado como completado exitosamente.
+        '404':
+          description: Usuario o documento no encontrado.
+        '500':
+          description: Error interno del servidor.
+  /api/users/update/{uid}:
+    put:
+      summary: Actualizar información de usuario
+      description: Actualiza la información de un usuario existente.
+      tags:
+        - Users
+      parameters:
+        - in: path
+          name: uid
+          required: true
+          description: ID del usuario a actualizar
+          schema:
+            type: string
+        - in: body
+          name: userUpdate
+          description: Datos actualizados del usuario
+          required: true
+          schema:
+            type: object
+            properties:
+              firstName:
+                type: string
+              lastName:
+                type: string
+              age:
+                type: integer
+              email:
+                type: string
+                format: email
+              password:
+                type: string
+              role:
+                type: string
+                enum: [user, admin, premium]
+              cartID:
+                type: string
+      responses:
+        '200':
+          description: Usuario actualizado exitosamente.
+        '404':
+          description: Usuario no encontrado.
+        '500':
+          description: Error interno del servidor.
+  /api/users/delete/{uid}:
+    delete:
+      summary: Eliminar usuario
+      description: Elimina un usuario existente por su ID.
+      tags:
+        - Users
+      parameters:
+        - in: path
+          name: uid
+          required: true
+          description: ID del usuario a eliminar
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Usuario eliminado exitosamente.
+        '404':
+          description: Usuario no encontrado.
+        '500':
+          description: Error interno del servidor.
+  /api/users/deleteinactive:
+    delete:
+      summary: Eliminar usuarios inactivos
+      description: Elimina a los usuarios inactivos cuya última conexión es anterior a cierta fecha.
+      tags:
+        - Users
+      responses:
+        '200':
+          description: Usuarios inactivos eliminados exitosamente.
+        '500':
+          description: Error interno del servidor al eliminar usuarios inactivos.

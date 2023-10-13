@@ -1,0 +1,85 @@
+<nav>
+  <div class='desktopNavbar'>
+    <span class='desktopNavLinkLogo'>Nische Store</span>
+    <div class='desktopNavLeft'>
+    </div>
+    <div class='desktopNavRight'>
+      {{#if session}}
+        <a href='/api/sessions/current' class='cartInfo' id='{{session.cartID}}'><img src='/images/login.png' alt='Icono login' /><span class='desktopNavIcon'>{{session.firstName}}</span></a>
+        <a id='logout-btn' type='submit' class='desktopNavIcon'><i class='material-icons'>exit_to_app</i>Salir</a>
+      {{else}}
+        <div class='desktopNavLog'>
+          <a href='/?login=true'><img src='/images/login.png' alt='Icono login' /><span class='desktopNavLink'>Login</span></a>
+        </div>
+        <div class='desktopNavLog'>
+          <a href='/?register=true' class='desktopNavLink'>Registro</a>
+        </div>
+      {{/if}}
+      <div class='search-icon' id='search-icon'>
+        <img class='desktopNavIcon material-icons' src='/images/lupa.png' alt='Lupa' id='search-icon-img' />
+      </div>
+      <div class='search-box' id='search-box'>
+        <form id='search-form'>
+          <input type='text' id='search-input' name='query' placeholder='Buscar...' />
+          <button type='submit'>Buscar</button>
+        </form>
+      </div>
+      <div>
+        <a onclick="location.href='/carts/{{session.cartID}}'"><img class='desktopNavIcon' src='/images/carrito.png' alt='carrito' /></a>
+      </div>
+      <div>
+        <img class='desktopNavIcon' src='/images/corazon.png' alt='icnsettingsicnxs8081' />
+      </div>
+    </div>
+    {{#if isAdmin}}
+      <div class='admin-button'>
+        <button class='button is-info' onclick="location.href='http://localhost:8080/api/users/adminControl'">
+          <span class='icon'><i class='material-icons'>admin_panel_settings</i></span>
+          <span>Panel de Administrador</span>
+        </button>
+      </div>
+    {{/if}}
+  </div>
+</nav>
+<section>
+  <div class='homeBodyBanner'>
+    <div class='desktopshopheader1-colmd6'>
+      <h5 class='desktopshopheader1-text10 h5'><span>INTER MIAMI</span></h5>
+      <h3 class='desktopshopheader1-text12'>
+        MESSI<br />
+        COLLECTION
+      </h3>
+      <h4 class='desktopshopheader1-text17 h4'>
+        Nueva camiseta titular de Inter Miami<br />
+        para los fanáticos del mejor jugador del mundo
+      </h4>
+      {{#if session}}
+        <div class='desktopshopheader1-cta'>
+          <button class='desktopshopheader1-buttonbtnprimarycolorbtnlg' onclick="location.href='http://localhost:8080/products'">
+            <h3 class='desktopshopheader1-text22 h31'>COMPRAR AHORA</h3>
+          </button>
+        </div>
+      {{else}}
+        <div class='desktopshopheader1-cta'>
+          <button class='desktopshopheader1-buttonbtnprimarycolorbtnlg' onclick="location.href='http://localhost:8080/?login=true'">
+            <h3 class='desktopshopheader1-text22 h31'>REGISTRATE PARA COMPRAR</h3>
+          </button>
+        </div>
+      {{/if}}
+    </div>
+    <img src='/images/Vector 14.png' alt='Vector' class='desktopshopheader1-vector14' />
+    <img src='/images/messi5.png' alt='Image Messi Tshirt 2' class='desktopshopheader1-image64' />
+    <img src='/images/messi2.png' alt='Image Messi Tshirt 1' class='desktopshopheader1-image61' />
+    <img src='/images/messi1.png' alt='Image Messi' class='desktopshopheader1-image62' />
+    <img src='/images/messi4.png' alt='Image Messi and Alba' class='desktopshopheader1-image60' />
+    <img src='/images/messi3.png' alt='Image Jordi Alba' class='desktopshopheader1-image63' />
+  </div>
+</section>
+<div class='chatButton'>
+  <button onclick="location.href='/chat'">
+    <i class='material-icons'>chat</i></button>
+</div>
+
+<script src='/js/profile.js'></script>
+<script src='/js/home.js'></script>
+<script src='/js/searchbar.js'></script>

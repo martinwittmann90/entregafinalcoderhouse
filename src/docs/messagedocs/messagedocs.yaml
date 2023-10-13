@@ -1,0 +1,52 @@
+openapi: 3.0.0
+info:
+  title: Nische Store API
+  description: Documentación de la API de Nische Store - Módulo de Mensajeria
+
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+    description: Desarrollo
+paths:
+  /api/messageandmails/mail:
+    get:
+      summary: Enviar correo electrónico
+      description: Esta ruta se utiliza para enviar un correo electrónico.
+      tags:
+        - Mensajes y Correos
+      responses:
+        200:
+          description: Correo electrónico enviado con éxito.
+          content:
+            text/html:
+              schema:
+                type: string
+                example: <!DOCTYPE html><html><head>...</head><body><h1>Correo electrónico enviado con éxito</h1>...</body></html>
+        500:
+          description: Error al enviar el correo electrónico.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Error al enviar el correo electrónico.
+  /api/messageandmails/sms:
+    get:
+      summary: Enviar mensaje de texto (SMS)
+      description: Esta ruta se utiliza para enviar un mensaje de texto (SMS).
+      tags:
+        - Mensajes y Correos
+      responses:
+        200:
+          description: SMS enviado con éxito.
+          content:
+            text/html:
+              schema:
+                type: string
+                example: <!DOCTYPE html><html><head>...</head><body><h1>SMS enviado con éxito</h1>...</body></html>
+        500:
+          description: Error al enviar el SMS.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Error al enviar el SMS.

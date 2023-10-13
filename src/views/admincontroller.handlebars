@@ -1,0 +1,40 @@
+<h1>BASE DE DATOS DE LOS USUARIOS</h1>
+<button class='averageButton' onclick="location.href='/products'">Productos</button>
+<button class='averageButton' onclick="location.href='/api/sessions/current'">Usuario</button>
+<div class='containerAdmin'>
+  <table class='data-table'>
+    <thead>
+      <tr>
+        <th>ID del usuario</th>
+        <th>Email</th>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Rol</th>
+        <th>Edad</th>
+        <th>Ultima conexion</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each users}}
+        <tr>
+          <td>{{_id}}</td>
+          <td>{{email}}</td>
+          <td>{{firstName}}</td>
+          <td>{{lastName}}</td>
+          <td>
+            <a href='/api/users/premium/{{_id}}' class='{{role}}'>{{role}}</a>
+          </td>
+          <td class='small-cell'>{{age}}</td>
+          <td>{{last_connection}}</td>
+          <td>
+            <form id='deleteUserForm_{{_id}}'>
+              <button type='button' class='averageButton' onclick="deleteUser('{{_id}}')">Eliminar</button>
+            </form>
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
+
+<script src='/js/profile.js'></script>
