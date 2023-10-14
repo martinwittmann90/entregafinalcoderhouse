@@ -73,11 +73,11 @@ web_modules/
 .yarn-integrity
 
 # dotenv environment variable files
+.env.qa
 .env
 .env.development
 .env.test.local
 .env.production
-.env.qa
 .env.local
 .gitignore
 # parcel-bundler cache (https://parceljs.org/)
