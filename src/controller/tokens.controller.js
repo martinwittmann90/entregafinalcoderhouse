@@ -26,7 +26,7 @@ class TokenController {
         return res.status(404).json({ success: false, message: 'User not found' });
       }
       const token = await tokenService.generateResetTokenService(user._id); //
-      const resetLink = `/reset-password/${token.tokenNumber}`;
+      const resetLink = `https://nischestore.onrender.com/reset-password/${token.tokenNumber}`;
       const mailOptions = {
         from: mailController.GOOGLE_EMAIL,
         to: email,
