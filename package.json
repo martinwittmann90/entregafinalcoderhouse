@@ -4,6 +4,9 @@
   "description": "",
   "main": "server.js",
   "type": "module",
+  "engines": {
+    "node": "18.x"
+  },
   "scripts": {
     "start": "node ./src/server.js --mode PRODUCTION",
     "qa": "node ./src/server.js --mode QA",
