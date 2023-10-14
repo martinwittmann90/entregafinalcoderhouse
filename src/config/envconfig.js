@@ -25,6 +25,7 @@ if (program.opts().mode === 'QA') {
 }
 
 export default {
+  BASE_URL: process.env.BASE_URL,
   githubcallbackURL: process.env.GITHUB_CALLBACKURL,
   port: process.env.PORT,
   PERSISTENCE: process.env.PERSISTENCE,
