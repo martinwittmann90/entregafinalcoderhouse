@@ -27,7 +27,7 @@ class TokenController {
       }
       const token = await tokenService.generateResetTokenService(user._id);
       const base_url = process.env.BASE_URL;
-      const resetLink = `${base_url}/reset-password/${token.tokenNumber}`;
+      const resetLink = `${base_url}/tokens/reset-password/${token.tokenNumber}`;
       const mailOptions = {
         from: mailController.GOOGLE_EMAIL,
         to: email,
