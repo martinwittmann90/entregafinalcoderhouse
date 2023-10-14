@@ -55,12 +55,12 @@ function removeProductFromCart(_id) {
     .then((response) => response.json())
     .then((res) => {
       alert('Product removed from cart');
+      window.location.reload();
     })
     .catch((error) => {
       console.error('Error:', error);
       alert(JSON.stringify(error));
     });
-  window.location.href = window.location.href;
 }
 
 /*------------------------EMPTY CART---------------------*/
