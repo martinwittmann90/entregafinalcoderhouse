@@ -6,9 +6,9 @@
   "type": "module",
   "scripts": {
     "start": "node ./src/server.js --mode PRODUCTION",
-    "qa": "node ./src/server.js --mode PRODUCTION",
-    "test": "mocha --timeout 1000000000 'test/**/*.test.js'",
-    "dev": "nodemon -e yaml,js ./src/server.js --mode DEVELOPMENT"
+    "qa": "node ./src/server.js --mode QA",
+    "dev": "nodemon -e yaml,js ./src/server.js --mode DEVELOPMENT",
+    "test": "mocha 'test/**/*.test.js'"
   },
   "author": "Martin Wittmann",
   "license": "ISC",

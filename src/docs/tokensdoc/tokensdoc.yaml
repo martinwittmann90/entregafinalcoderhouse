@@ -7,7 +7,7 @@ servers:
   - url: http://localhost:8080
     description: Desarrollo
 paths:
-  /api/tokens/forget-password:
+  /api/tokens/forgetpassword:
     get:
       summary: Renderizar la página de restablecimiento de contraseña
       description: Esta ruta se utiliza para renderizar la página de restablecimiento de contraseña.

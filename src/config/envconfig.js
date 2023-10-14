@@ -3,13 +3,26 @@ import { Command } from 'commander';
 
 const program = new Command();
 program.option('--mode <mode>', 'Modo de trabajo', 'DEVELOPMENT');
+program.option('--mode <mode>', 'Modo de control de calidad', 'QA');
+program.option('--mode <mode>', 'Modo de produccion', 'PRODUCTION');
+
 program.parse();
 
-dotenv.config({
-  path: program.opts().mode === 'DEVELOPMENT' ? './.env.development' : './.env.production',
-});
-
 process.env.NODE_ENV = program.opts().mode;
+
+if (program.opts().mode === 'QA') {
+  dotenv.config({
+    path: './.env.qa',
+  });
+} else if (program.opts().mode === 'PRODUCTION') {
+  dotenv.config({
+    path: './.env.production',
+  });
+} else if (program.opts().mode === 'DEVELOPMENT') {
+  dotenv.config({
+    path: './.env.development',
+  });
+}
 
 export default {
   githubcallbackURL: process.env.GITHUB_CALLBACKURL,

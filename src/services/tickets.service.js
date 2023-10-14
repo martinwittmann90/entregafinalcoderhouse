@@ -13,7 +13,7 @@ class ServiceTickets {
         purchaser: purchaser,
         products: ticket,
       };
-      const savedTicket = await ticketsDAO.addTicketDao(ticketData);
+      const savedTicket = await ticketsDAO.createTicketDao(ticketData);
       return savedTicket;
     } catch (error) {
       throw `Service tickets failure. ${error}`;

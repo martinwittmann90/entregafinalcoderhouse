@@ -8,20 +8,6 @@ let cartID = '65286f18af18102731556196';
 const cid = '65286f18af18102731556196';
 const pid = '651f38a80ad3fc63337ffacd';
 
-/* before(async () => {
-  await mongoose.connect('mongodb+srv://martinwittmann90:iC00uo5o@projectmartinwittmann.l8a7l5b.mongodb.net/ecommerce?retryWrites=true&w=majority', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
-});
-after(async () => {
-  await mongoose.disconnect();
-}); */
-
-/* beforeEach(async () => {
-  await mongoose.connection.dropDatabase();
-}); */
-
 before(async function loginUser() {
   const loginCredentials = {
     email: 'prueba@prueba.com',

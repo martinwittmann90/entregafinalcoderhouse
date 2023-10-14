@@ -26,7 +26,7 @@ class TokenController {
         return res.status(404).json({ success: false, message: 'User not found' });
       }
       const token = await tokenService.generateResetTokenService(user._id); //
-      const resetLink = `http://localhost:8080/reset-password/${token.tokenNumber}`;
+      const resetLink = `/reset-password/${token.tokenNumber}`;
       const mailOptions = {
         from: mailController.GOOGLE_EMAIL,
         to: email,

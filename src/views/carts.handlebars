@@ -3,28 +3,72 @@
   <p><i class='material-icons'>credit_card</i> 3 Cuotas sin interés</p>
   <p><i class='material-icons'>phone</i> 0800-777-NISCHE</p>
 </div>
-<nav class='navbar'>
-  {{#if session}}
-    <div>
-      <a onclick="location.href='/products'"><img src='https://i.ibb.co/nrNMjtT/logo.png' alt='logo' width='100px' style='margin-left: 1.4rem;' /></a>
+<nav>
+  <div class='desktopNavbar'>
+    <a href='http://localhost:8080/'><span class='desktopNavLinkLogo'>Nische Store</span></a>
+    <div class='desktopNavLeft'>
     </div>
-    <div>
-      <h2 class='navbar__title'>CHECKOUT</h2>
+    <div class='dropdown'>
+      <a href='#'>Mujer</a>
+      <div class='dropdown-content'>
+        <a href='#'>Camisetas</a>
+        <a href='#'>Pantalones</a>
+        <a href='#'>Zapatillas</a>
+      </div>
     </div>
-    <div class='navbar__content'>
-      <a href='/api/sessions/current' class='navbar__link cartInfo' id='{{session.cartID}}'>
-        <button class='navbar__button averageButton'><span class='icon'><i class='material-icons'>account_circle</i></span><span>{{session.firstName}}</span></button></a>
-      <button class='navbar__logout-btn averageButton' onclick="location.href='/chat'">
-        <i class='material-icons'>chat</i>
-        Chat
-      </button>
-      <button id='logout-btn' class='navbar__logout-btn averageButton'><span class='icon'><i class='material-icons'>exit_to_app</i></span><span>Salir</span></button>
+    <div class='dropdown'>
+      <a href='#'>Hombre</a>
+      <div class='dropdown-content'>
+        <a href='#'>Camisetas</a>
+        <a href='#'>Pantalones</a>
+        <a href='#'>Zapatillas</a>
+      </div>
     </div>
-  {{else}}
-    <p class='navbar__guest-message'>Bienvenido a la tienda</p>
-    <a href='/?login=true' class='navbar__link button is-light'>INICIAR SESIÓN</a>
-    <a href='/?register=true' class='navbar__link button is-primary'>REGISTRO</a>
-  {{/if}}
+    <div class='dropdown'>
+      <a href='#'>Niño</a>
+      <div class='dropdown-content'>
+        <a href='#'>Camisetas</a>
+        <a href='#'>Pantalones</a>
+        <a href='#'>Zapatillas</a>
+      </div>
+    </div>
+    <div class='desktopNavRight'>
+      {{#if session}}
+        <a href='/api/sessions/current' class='cartInfo' id='{{session.cartID}}'><img src='/images/login.png' alt='Icono login' /><span class='desktopNavIcon'>{{session.firstName}}</span></a>
+        <a id='logout-btn' type='submit' class='desktopNavIcon'><i class='material-icons'>exit_to_app</i>Salir</a>
+      {{else}}
+        <div class='desktopNavLog'>
+          <a href='/?login=true'><img src='/images/login.png' alt='Icono login' /><span class='desktopNavLink'>Login</span></a>
+        </div>
+        <div class='desktopNavLog'>
+          <a href='/?register=true' class='desktopNavLink'>Registro</a>
+        </div>
+      {{/if}}
+      <div class='search-icon' id='search-icon'>
+        <img class='desktopNavIcon material-icons' src='/images/lupa.png' alt='Lupa' id='search-icon-img' />
+      </div>
+      <div class='search-box' id='search-box'>
+        <form id='search-form'>
+          <input type='text' id='search-input' name='query' placeholder='Buscar...' />
+          <button type='submit'>Buscar</button>
+        </form>
+      </div>
+      <div>
+        <a onclick="location.href='/carts/{{session.cartID}}'"><img class='desktopNavIcon' src='/images/carrito.png' alt='carrito' /></a>
+      </div>
+      <div>
+        <img class='desktopNavIcon' src='/images/corazon.png' alt='icnsettingsicnxs8081' />
+      </div>
+    </div>
+    {{#if isAdmin}}
+      <div class='admin-button'>
+        <button class='button is-info' onclick="location.href='http://localhost:8080/api/users/adminControl'">
+          <span class='icon'><i class='material-icons'>admin_panel_settings</i></span>
+          <span>Panel de Administrador</span>
+        </button>
+      </div>
+    {{/if}}
+  </div>
 </nav>
 {{#if cart.length}}
   <table class='table__cart'>
@@ -65,6 +109,13 @@
   </button>
 {{/if}}
 <a class='infoCart' id='{{userCartId}}'></a>
+<div class='chatButton'>
+  <button onclick="location.href='/chat'">
+    <i class='material-icons'>chat</i></button>
+</div>
 
 <script src='/js/cart.js'></script>
 <script src='/js/profile.js'></script>
+<script src='/js/products.js'></script>
+<script src='/js/home.js'></script>
+<script src='/js/searchbar.js'></script>

@@ -10,7 +10,6 @@ import tokensRouter from '../routes/tokens.routes.js';
 import usersRouter from '../routes/users.routes.js';
 import viewsRouter from '../routes/view.routes.js';
 const indexRouter = Router();
-
 /*-------PLANTILLAS-------*/
 indexRouter.use('/', viewsRouter);
 indexRouter.use('/realtimeproducts', viewsRouter);
@@ -21,14 +20,13 @@ indexRouter.use('/auth/profile', sessionsRouter);
 indexRouter.use('/', productsRouter);
 indexRouter.use('/', messageandmailRouter);
 indexRouter.use('/', mockRouter);
-indexRouter.use('/', tokensRouter);
-
+indexRouter.use('/tokens', tokensRouter);
 /*-------END POINTS-------*/
 indexRouter.use('/api/users', usersRouter);
 indexRouter.use('/api/products', productsRouter);
 indexRouter.use('/api/carts', cartsRouter);
 indexRouter.use('/api/sessions', sessionsRouter);
-
+indexRouter.use('/api/tokens', tokensRouter);
 /*-------Error handler-------*/
 indexRouter.get('/*', async (req, res) => {
   res.render('notfound');
